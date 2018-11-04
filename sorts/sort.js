@@ -8,6 +8,7 @@ Algorithm.prototype = {
    * 依次两两比较，依次冒泡结束，总有一个数会在正确的位置
    * @param {Object} a 数组
    * @param {Number} n 数组大小
+   * O(n²)
    */
   bubbleSort: function (a, n) {
     if (n <= 1) {
@@ -35,6 +36,7 @@ Algorithm.prototype = {
    * 分为已排序、未排序，从为排序中取数据插入已排序区间
    * @param {Object} a 数组
    * @param {Number} n 数组大小
+   * O(n²)
    */
   insertionSort(a, n) {
     if (n <= 1) {
@@ -61,6 +63,7 @@ Algorithm.prototype = {
    * 类似插入排序，分为已排序、未排序，每次从未排序中选出最小的数据放入已排序末尾
    * @param {Array} a 数组
    * @param {Number} n 数组大小
+   * O(n²)
    */
   selectionSort: function (a, n) {
     if (n <= 1) {
@@ -110,6 +113,7 @@ Algorithm.prototype = {
   /**
    * 归并（递归）
    * @param {Array} a
+   * O(n㏒n)
    */
   mergeSort: function (a) {
     if (a.length === 1) {
@@ -124,6 +128,7 @@ Algorithm.prototype = {
   /**
    * 快排
    * @param {Array} arr
+   * O(n㏒n)
    */
   quickSort: function(arr) {
     //如果数组<=1,则直接返回
@@ -147,7 +152,55 @@ Algorithm.prototype = {
     }
     //递归
     return quickSort(left).concat([pivot],quickSort(right))
-  }   
+  },
+  // 计数排序，a 是数组，n 是数组大小。假设数组中存储的都是非负整数。
+  /**
+   * 计数排序
+   * @param {Array} a 
+   * @param {Number} n 
+   */
+  countingSort: function(a, n) {
+    if (n <= 1) return;
+
+    // 查找数组中数据的范围
+    let max = a[0];
+    for (let i = 1; i < n; ++i) {
+      if (max < a[i]) {
+        max = a[i];
+      }
+    }
+
+    let c = []; // 申请一个计数数组 c，下标大小 [0,max]
+    for (let i = 0; i <= max; ++i) {
+      c[i] = 0;
+    }
+
+    // 计算每个元素的个数，放入 c 中
+    for (let i = 0; i < n; ++i) {
+      c[a[i]]++;
+    }
+
+    // 依次累加
+    for (let i = 1; i <= max; ++i) {
+      c[i] = c[i - 1] + c[i];
+    }
+
+    // 临时数组 r，存储排序之后的结果
+    let r = [];
+    // 计算排序的关键步骤，有点难理解
+    for (let i = n - 1; i >= 0; --i) {
+      let index = c[a[i]] - 1;
+      r[index] = a[i];
+      c[a[i]]--;
+    }
+
+    // 将结果拷贝给 a 数组
+    for (let i = 0; i < n; ++i) {
+      a[i] = r[i];
+    }
+  },
+  
+   
 
 }
 export default new Algorithm()
