@@ -135,12 +135,12 @@ Algorithm.prototype = {
     if (arr.length <= 1) {
       return arr
     }
-    let pivotIndex = ~~(arr.length/2)
+    const pivotIndex = arr.length>>>1
     //找基准，并把基准从原数组删除
-    let pivot = arr.splice(pivotIndex,1)[0]
+    const pivot = arr.splice(pivotIndex,1)[0]
     //定义左右数组
-    let left = []
-    let right = []
+    const left = []
+    const right = []
 
     //比基准小的放在left，比基准大的放在right
     for (let i = 0; i < arr.length; i++) {
