@@ -60,9 +60,11 @@ class Promise {
     this.rejectedCallbacks = []
 
     const resolve = (value) => {
+      // 不属于Promise/A+规范
       if (value instanceof Promise) {
         return value.then(resolve, reject)
       }
+
       if (this.status === PENDING) {
         this.status = FULFILLED
         this.value = value
@@ -89,7 +91,6 @@ class Promise {
   }
 
   then(onFulfilled, onRejected) {
-    const that = this
     const r1 = typeof onFulfilled === 'function' ? onFulfilled : v => v
     const r2 = typeof onRejected === 'function' ? onRejected : e => {throw e}
     let p = null

@@ -143,7 +143,11 @@ class Promise {
     return promise2;
   }
 
-
+  /**
+   * 捕获Promise异常，相当于一个没有成功的 then
+   * @param {*} errCallback 
+   * @returns 
+   */
   catch(errCallback) {
     return this.then(null,errCallback)
   }
@@ -155,19 +159,31 @@ class Promise {
       return Promise.resolve(callback()).then(()=>{throw reason})
     })  
   }
-
+  /**
+   * 默认产生一个成功的Promise
+   * @param {*} data 
+   * @returns 
+   */
   static resolve(data){
     return new Promise((resolve,reject)=>{
       resolve(data);
     })
   }
-
+  /**
+   * 默认产生一个失败的Promise
+   * @param {*} reason 
+   * @returns 
+   */
   static reject(reason){
     return new Promise((resolve,reject)=>{
       reject(reason);
     })
   } 
-
+  /**
+   * Promise并发，全部成功则成功，必须全部完成，直到全成功或有一个失败
+   * @param {*} values 
+   * @returns 
+   */
   static all(values) {
     if (!Array.isArray(values)) {
       const type = typeof values;
@@ -195,7 +211,11 @@ class Promise {
       }
     });
   }
-
+  /**
+   * 多个Promise中有一个成功
+   * @param {*} promises 
+   * @returns 
+   */
   static race(promises) {
     return new Promise((resolve, reject) => {
       for (let i = 0; i < promises.length; i++) {
